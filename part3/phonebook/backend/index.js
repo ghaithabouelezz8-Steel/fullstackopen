@@ -91,6 +91,6 @@ app.post('/api/persons',(request,response)=>{
     persons=persons.concat(newPerson)
     response.json(newPerson)
 })
-const PORT =3001
+const PORT =process.env.PORT || 3001
 app.listen(PORT,()=>{console.log(`server running on port ${PORT}` )})
 
