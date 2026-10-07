@@ -4,6 +4,7 @@ import ShowingName from './components/ShowingName'
 import ShowingNameDetails from './components/showingNameDetails'
 import personService from './services/person'
 import SuccessfulMessage from './components/SccessfulMessage'
+import ErrorMessage from './components/ErrorMessage'
 
 
 const App = () => {
@@ -12,6 +13,8 @@ const App = () => {
   const[newNumber,setNewNumber]=useState('')
   const[showName,setShowName]=useState('')
   const [successfulAddition,setSuccessfulAddition]=useState(null)
+
+  const [errorMessage,setErrorMessage]=useState(null)
 
   useEffect(()=>{
     personService
@@ -59,6 +62,7 @@ const App = () => {
     setNewName('')
     setNewNumber('')
    })
+   .catch(error=>setErrorMessage(error.response.data.error))
    
    }
    
@@ -87,6 +91,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <ErrorMessage value={errorMessage} />
       <SuccessfulMessage message={successfulAddition} />
 
         <ShowingName showingValue={showName} showingChange={handleNameToShow}/>
