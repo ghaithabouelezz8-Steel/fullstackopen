@@ -6,11 +6,12 @@ const middleware= require('../utils/middleware')
 const userExtractor=require('../utils/middleware').userExtractor
 
 blogRouter.get('/',async(request,response)=>{
-     const blogs= await Blog.find({}).populate('user',({username:1,name:1}))
+     const blogs= await Blog.find({}).populate('user',({_id:1,username:1,name:1}))
     response.json(blogs)
 })
 blogRouter.get('/:id',async(request,response)=>{
 const blogToBeFound=await Blog.findById(request.params.id)
+await blogToBeFound.populate('user',({_id:1,username:1,name:1}))
     if(!blogToBeFound){
         response.status(404).end()
     }
@@ -42,8 +43,13 @@ const newBlog=new Blog({title: body.title,
         if(!newBlog.url || !newBlog.title)
         return  response.status(400).json({error:'title or url missing'})
 const blog =await newBlog.save()
+
 user.blogs=user.blogs.concat(blog._id)
 await user.save()
+await blog.populate('user', {_id:1,
+  username: 1,
+  name: 1
+})
     response.status(201).json(blog)
 
 })
@@ -78,6 +84,10 @@ const body =request.body
         blog.title=body.title
 
        await blog.save()
+       await blog.populate('user', {_id:1,
+  username: 1,
+  name: 1
+})
        response.status(200).json(blog)
     
     

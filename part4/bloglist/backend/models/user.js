@@ -17,7 +17,7 @@ blogs:[
 
 userSchema.set('toJSON',{
     transform :(document,returnedValue)=>{
-        returnedValue.id=returnedValue._id
+        returnedValue.id=returnedValue._id.toString()
 
         delete returnedValue.__v
         delete returnedValue._id
